@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    <style>
+        /* Full Page Centering */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* 3D Tile Effect for Form */
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #ffffff, #d6d6d6);
+            border-radius: 15px;
+            box-shadow: 8px 8px 15px #bebebe, -8px -8px 15px #ffffff;
+            width: 350px;
+        }
+
+        /* Input & Select Fields */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 90%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: linear-gradient(145deg, #ffffff, #d6d6d6);
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+            transition: 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+        }
+
+        /* 3D Button */
+        .glow-button {
+            padding: 12px 20px;
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+        }
+
+        .glow-button:hover {
+            background: linear-gradient(145deg, #0056b3, #007bff);
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+        }
+
+        /* Back Button Styling */
+        .back-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: linear-gradient(145deg, #f0f0f0, #d6d6d6);
+            text-decoration: none;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+            transition: 0.3s;
+        }
+
+        .back-button:hover {
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Product</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label>{{ form.name.label }}</label>
+                {{ form.name() }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.category.label }}</label>
+                {{ form.category() }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.price.label }}</label>
+                {{ form.price() }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.quantity.label }}</label>
+                {{ form.quantity() }}
+            </div>
+
+            <button class="glow-button">{{ form.submit.label }}</button>
+        </form>
+
+        <a href="{{ url_for('index') }}" class="back-button">Back</a>
+    </div>
+</body>
+</html>

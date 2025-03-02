@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0e0e0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(145deg, #ffffff, #d6d6d6);
+            border-radius: 15px;
+            box-shadow: 8px 8px 15px #bebebe, -8px -8px 15px #ffffff;
+            width: 350px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 90%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: linear-gradient(145deg, #ffffff, #d6d6d6);
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+            transition: 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+        }
+        .glow-button {
+            padding: 12px 20px;
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+        }
+        .glow-button:hover {
+            background: linear-gradient(145deg, #0056b3, #007bff);
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .btn-container a {
+            text-decoration: none;
+            text-align: center;
+            flex: 1;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Product</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label>{{ form.name.label }}</label>
+                {{ form.name() }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.category.label }}</label>
+                {{ form.category() }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.quantity.label }}</label>
+                {{ form.quantity() }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.price.label }}</label>
+                {{ form.price() }}
+            </div>
+
+            <button class="glow-button">{{ form.submit.label }}</button>
+        </form>
+        <br>
+
+        <div class="btn-container">
+            <a href="{{ url_for('index') }}" class="glow-button">Back</a>
+        </div>
+    </div>
+</body>
+</html>

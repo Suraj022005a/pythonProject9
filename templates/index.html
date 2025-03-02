@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dairy Product Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Global Styles */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #e0e0e0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            padding: 20px;
+            background: linear-gradient(145deg, #ffffff, #d6d6d6);
+            border-radius: 15px;
+            box-shadow: 8px 8px 15px #bebebe, -8px -8px 15px #ffffff;
+            text-align: center;
+        }
+
+        .glow-button {
+            display: inline-block;
+            padding: 12px 20px;
+            background: linear-gradient(145deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+            transition: 0.3s;
+        }
+
+        .glow-button:hover {
+            background: linear-gradient(145deg, #0056b3, #007bff);
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: linear-gradient(145deg, #ffffff, #d6d6d6);
+            box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .edit-button, .delete-button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .edit-button {
+            background: linear-gradient(145deg, #28a745, #1e7e34);
+            color: white;
+            box-shadow: 3px 3px 8px #bebebe, -3px -3px 8px #ffffff;
+        }
+
+        .edit-button:hover {
+            background: linear-gradient(145deg, #1e7e34, #28a745);
+            box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+        }
+
+        .delete-button {
+            background: linear-gradient(145deg, #dc3545, #c82333);
+            color: white;
+            box-shadow: 3px 3px 8px #bebebe, -3px -3px 8px #ffffff;
+        }
+
+        .delete-button:hover {
+            background: linear-gradient(145deg, #c82333, #dc3545);
+            box-shadow: inset 3px 3px 6px #bebebe, inset -3px -3px 6px #ffffff;
+        }
+
+        /* Styling for the button to fetch data */
+        .fetch-button {
+            background-color: #ff9800;
+            border-radius: 10px;
+            padding: 10px 15px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 5px 5px 10px #bebebe, -5px -5px 10px #ffffff;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .fetch-button:hover {
+            background-color: #f57c00;
+        }
+
+        /* Add loader animation styles */
+        .loader {
+            display: none;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Dairy Products</h1>
+        <a href="{{ url_for('add_product') }}" class="glow-button">Add New Product</a>
+
+        <button class="fetch-button" onclick="fetchProducts()">Fetch Products</button>
+        <div class="loader">Loading...</div>
+
+        <table id="productTable" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Price (INR)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+
+    <script>
+        function fetchProducts() {
+            const loader = document.querySelector('.loader');
+            const table = document.getElementById('productTable');
+            const tableBody = table.querySelector('tbody');
+            loader.style.display = 'block'; // Show the loader
+
+            fetch('/api/products')
+                .then(response => response.json())
+                .then(data => {
+                    tableBody.innerHTML = ''; // Clear the existing table rows
+                    data.forEach(product => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${product.name}</td>
+                            <td>${product.category}</td>
+                            <td>${product.quantity}</td>
+                            <td>₹${product.price}</td>
+                            <td class="action-buttons">
+                                <a href="/update/${product.id}" class="edit-button">Edit</a>
+                                <a href="/delete/${product.id}" class="delete-button" onclick="return confirm('Are you sure?');">Delete</a>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+
+                    loader.style.display = 'none'; // Hide the loader
+                    table.style.display = 'block'; // Show the table
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                    loader.style.display = 'none'; // Hide the loader
+                    alert('Error fetching products. Please try again later.');
+                });
+        }
+    </script>
+
+</body>
+</html>
